@@ -3,13 +3,14 @@ const express = require('express');
 // create new router
 const router = express.Router();
 
-// create a JSON data array
+// create a JSON data array Book will have following fields:
+// id, title, description, categoryId, author, createdDate
 let data = [
-    { id: 1, title: 'Create a project',  order: 1, completed: true, createdOn: new Date() },
-    { id: 2, title: 'Take a cofféé',     order: 2, completed: true, createdOn: new Date() },
-    { id: 3, title: 'Write new article', order: 3, completed: true, createdOn: new Date() },
-    { id: 4, title: 'Walk toward home', order: 4, completed: false, createdOn: new Date() },
-    { id: 5, title: 'Have some dinner', order: 5, completed: false, createdOn: new Date() },
+    { id: 1, title: 'Quiz Book',  description: 'This is a Quiz Book.', categoryId: 1, author: 'Ram', createdOn: new Date() },
+    { id: 2, title: 'Maths Book',    description : 'This is a Maths Book.', categoryId: 2, author: 'Shai', createdOn: new Date() },
+    { id: 3, title: 'Science Book', description : 'This ia a Science Book.', categoryId: 3, author: 'Mono', createdOn: new Date() },
+    { id: 4, title: 'Social Book', description : 'This is a Social Book.', categoryId: 4, author: 'Deepa', createdOn: new Date() },
+    { id: 5, title: 'Nepali Book', description: 'This is a Nepali Book.', categoryId: 5, author: 'Riya', createdOn: new Date() },
 ];
 // HTTP methods ↓↓ starts here.
 
@@ -42,19 +43,20 @@ router.post('/', function (req, res) {
     // get itemIds from data array
     let itemIds = data.map(item => item.id);
     // get orderNums from data array
-    let orderNums = data.map(item => item.order);
+    let categoryIdNums = data.map(item => item.order);
 
     // create new id (basically +1 of last item object)
     let newId = itemIds.length > 0 ? Math.max.apply(Math, itemIds) + 1 : 1;
     // create new order number (basically +1 of last item object)
-    let newOrderNum = orderNums.length > 0 ? Math.max.apply(Math, orderNums) + 1 : 1;
+    let newCategoryIdNum = categoryIdNums.length > 0 ? Math.max.apply(Math, orderNums) + 1 : 1;
 
     // create an object of new Item
     let newItem = {
         id: newId, // generated in above step
         title: req.body.title, // value of `title` get from POST req
-        order: newOrderNum, // generated in above step
-        completed: false, // default value is set to false
+        description: req.body.title,
+        categoryId: newCategoryIdNum, // generated in above step
+        author: newAuthor, // default value is set to false
         createdOn: new Date() // new date object
     };
 
@@ -81,8 +83,9 @@ router.put('/:id', function (req, res) {
         let updated = {
             id: found.id,
             title: req.body.title, // set value of `title` get from req
-            order: req.body.order, // set value of `order` get from req
-            completed: req.body.completed // set value of `completed` get from req
+            description: req.body.description,
+            categoryId: req.body.categoryId, // set value of `order` get from req
+            author: req.body.author // set value of `completed` get from req
         };
 
         // find index of found object from array of data
